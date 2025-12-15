@@ -16,7 +16,7 @@ export interface MaskSettings {
 }
 
 export async function loadExamples(): Promise<MaskSettings[]> {
-  const response = await fetch('/examples.json');
+  const response = await fetch(`${import.meta.env.BASE_URL}examples.json`);
   return response.json();
 }
 

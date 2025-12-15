@@ -20,7 +20,7 @@
     <div class="flex flex-col gap-2">
       <div class="flex items-center gap-2">
         <h1 class="text-2xl font-bold">
-          <img src="/logo.webp" alt="Mask Tester Logo" class="inline-block w-8 h-8 mr-2 align-middle" />
+          <img src="{import.meta.env.BASE_URL}logo.webp" alt="Mask Tester Logo" class="inline-block w-8 h-8 mr-2 align-middle" />
           CSS Mask Tester
         </h1>
         <button class="btn btn-circle btn-ghost btn-xs" aria-label="Mask Image Info" onclick="{toggleCollapse}">
