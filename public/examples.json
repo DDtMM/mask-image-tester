@@ -48,6 +48,26 @@
     ]
   },
   {
+    "name": "Chomp Animation",
+    "maskImage": "linear-gradient(\n  calc(90deg + var(--gradient-position) * 90deg),\n  transparent 0%,\n  transparent calc(var(--gradient-position) * 100%),\n  white calc(var(--gradient-position) * 100%),\n  white 100%\n),\nlinear-gradient(\n  calc(90deg - var(--gradient-position) * 90deg),\n  transparent 0%,\n  transparent calc(var(--gradient-position) * 100%),\n  white calc(var(--gradient-position) * 100%),\n  white 100%\n)",
+    "maskSize": "100% 50%, 100% 50%",
+    "maskPosition": "0% 0%, 0% 100%",
+    "maskRepeat": "no-repeat",
+    "maskMode": "alpha",
+    "variables": [
+      "--gradient-position: .0;"
+    ],
+    "animationSteps": [
+      {
+        "easing": "power2.in",
+        "duration": 0.5,
+        "variables": [
+          "--gradient-position: 1;"
+        ]
+      }
+    ]
+  },
+  {
     "name": "Circle Shape",
     "maskImage": "radial-gradient(\n  circle, \n  black var(--circle-size),\n  transparent 0%\n)",
     "maskSize": "200%",

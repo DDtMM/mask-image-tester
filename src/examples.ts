@@ -4,7 +4,7 @@ export interface AnimationStep {
   variables: string[];
 }
 
-export interface MaskExample {
+export interface MaskSettings {
   name: string;
   maskImage: string;
   maskSize?: string;
@@ -15,9 +15,9 @@ export interface MaskExample {
   animationSteps?: AnimationStep[];
 }
 
-export async function loadExamples(): Promise<MaskExample[]> {
+export async function loadExamples(): Promise<MaskSettings[]> {
   const response = await fetch('/examples.json');
   return response.json();
 }
 
-export type { MaskExample as default };
+export type { MaskSettings as default };

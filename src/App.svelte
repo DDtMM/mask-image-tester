@@ -4,33 +4,8 @@
   import AnimationControls from './AnimationControls.svelte';
   import MaskedImage from './MaskedImage.svelte';
   import ExportSettings from './ExportSettings.svelte';
-  import type { AnimationStep } from './examples';
   
   let maskedImage = $state<HTMLImageElement>();
-  let variables = $state<string[]>([]);
-  let maskImage = $state('');
-  let maskSize = $state<string | undefined>(undefined);
-  let maskPosition = $state<string | undefined>(undefined);
-  let maskRepeat = $state<string | undefined>(undefined);
-  let maskMode = $state<string | undefined>(undefined);
-  let animationSteps = $state<AnimationStep[]>([]);
-  
-  function handleVariablesChange(event: CustomEvent<string[]>): void {
-    variables = event.detail;
-  }
-  
-  function handleMaskPropertiesChange(event: CustomEvent<any>): void {
-    const props = event.detail;
-    maskImage = props.maskImage;
-    maskSize = props.maskSize;
-    maskPosition = props.maskPosition;
-    maskRepeat = props.maskRepeat;
-    maskMode = props.maskMode;
-  }
-  
-  function handleAnimationStepsChange(event: CustomEvent<AnimationStep[]>): void {
-    animationSteps = event.detail;
-  }
 
   function toggleCollapse(): void {
     const collapseElement = document.querySelector('.collapse');
@@ -72,19 +47,11 @@
     
     <ExampleSelector />
     
-    <ExportSettings 
-      {maskImage} 
-      {maskSize} 
-      {maskPosition} 
-      {maskRepeat} 
-      {maskMode} 
-      {variables} 
-      {animationSteps} 
-    />
+    <ExportSettings />
     
     <div class="divider my-2"></div>
     
-    <MaskProperties bind:maskedImage onVariablesChange={handleVariablesChange} onMaskPropertiesChange={handleMaskPropertiesChange} />
+    <MaskProperties bind:maskedImage />
   </div>
   
   <div class="flex-1 p-5 flex flex-col gap-4 bg-base-200 border-l border-base-300 h-screen min-w-0">
@@ -93,7 +60,7 @@
     </div>
     {#if maskedImage}
       <div class="max-h-[50vh] shrink-0">
-        <AnimationControls {maskedImage} {variables} onAnimationStepsChange={handleAnimationStepsChange} />
+        <AnimationControls {maskedImage} />
       </div>
     {/if}
   </div>

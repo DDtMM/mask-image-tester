@@ -1,10 +1,10 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import type { MaskExample } from './examples';
+  import type { MaskSettings } from './examples';
   import { loadExamples } from './examples';
   import { appStore } from './store.svelte';
   
-  let examples = $state<MaskExample[]>([]);
+  let examples = $state<MaskSettings[]>([]);
   let selectedExample = $state('');
   
   onMount(async () => {
@@ -13,7 +13,9 @@
   
   function handleExampleChange() {
     const example = examples.find(e => e.name === selectedExample);
-    appStore.setExample(example || null);
+    if (example) {
+      appStore.setExample(example);
+    }
   }
 </script>
 

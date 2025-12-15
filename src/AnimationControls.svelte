@@ -1,19 +1,18 @@
 <script lang="ts">
   import gsap from 'gsap';
-  import { appStore } from './store.svelte';
   import type { AnimationStep } from './examples';
+  import { appStore } from './store.svelte';
+    import { untrack } from 'svelte';
   
-  let { maskedImage, variables, onAnimationStepsChange }: { 
+  let { maskedImage }: { 
     maskedImage: HTMLImageElement; 
-    variables: string[];
-    onAnimationStepsChange?: (e: CustomEvent<AnimationStep[]>) => void;
   } = $props();
   
   let steps = $state<AnimationStep[]>([
     { easing: 'power1.out', duration: 2, variables: [] }
   ]);
   let yoyo = $state(true);
-  let currentAnimation = $state<gsap.core.Tween | gsap.core.Timeline | null>(null);
+  let currentAnimation = $state<gsap.core.Tween | gsap.core.Timeline | undefined>(undefined);
   
   const easingOptions = [
     'none', 'power1.in', 'power1.out', 'power1.inOut',
@@ -28,16 +27,14 @@
     'sine.in', 'sine.out', 'sine.inOut'
   ];
   
-  // Watch for example changes using version tracking
+  // Watch for example changes
   $effect(() => {
-    // Access both to trigger reactivity
-    const version = appStore.exampleVersion;
     const example = appStore.currentExample;
     
-    if (example && example.animationSteps && example.animationSteps.length > 0) {
+    if (example.animationSteps && example.animationSteps.length > 0) {
       // Use example's animation steps
       steps = example.animationSteps.map(step => ({ ...step }));
-    } else if (example) {
+    } else {
       // Reset to empty step if no animation data
       steps = [{
         easing: 'power1.out',
@@ -47,9 +44,9 @@
     }
   });
   
-  // Emit animation steps changes
+  // Update store when steps change
   $effect(() => {
-    onAnimationStepsChange?.(new CustomEvent('animationstepschange', { detail: steps }));
+    untrack(() => appStore.setAnimationSteps(steps));
   });
   
   function addStep() {
@@ -74,7 +71,7 @@
   function playAnimation(loop: boolean) {
     stopAnimation();
     
-    if (!variables || variables.length === 0) {
+    if (!appStore.maskSettings.variables || appStore.maskSettings.variables.length === 0) {
       alert('Please set CSS variables as starting values');
       return;
     }
@@ -86,7 +83,7 @@
     
     // Parse start values
     const startVars: Record<string, string> = {};
-    variables.forEach(line => {
+    appStore.maskSettings.variables.forEach(line => {
       const trimmed = line.trim();
       if (!trimmed) return;
       const match = trimmed.match(/^(--[\w-]+)\s*:\s*(.+?);?$/);
@@ -116,7 +113,7 @@
       },
       onComplete: () => {
         if (!loop) {
-          currentAnimation = null;
+          currentAnimation = undefined;
         }
       }
     });
@@ -157,17 +154,17 @@
   function stopAnimation() {
     if (currentAnimation) {
       currentAnimation.kill();
-      currentAnimation = null;
+      currentAnimation = undefined;
     }
   }
   
   function resetToInitial() {
     stopAnimation();
     
-    if (!variables || variables.length === 0) return;
+    if (!appStore.maskSettings.variables || appStore.maskSettings.variables.length === 0) return;
     
     const startVars: Record<string, string> = {};
-    variables.forEach(line => {
+    appStore.maskSettings.variables.forEach(line => {
       const trimmed = line.trim();
       if (!trimmed) return;
       const match = trimmed.match(/^(--[\w-]+)\s*:\s*(.+?);?$/);

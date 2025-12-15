@@ -1,10 +1,9 @@
 <script lang="ts">
+  import { untrack } from 'svelte';
   import { appStore } from './store.svelte';
   
-  let { maskedImage = $bindable(), onVariablesChange, onMaskPropertiesChange }: { 
+  let { maskedImage = $bindable() }: { 
     maskedImage: HTMLImageElement | undefined;
-    onVariablesChange?: (e: CustomEvent<string[]>) => void;
-    onMaskPropertiesChange?: (e: CustomEvent<any>) => void;
   } = $props();
   
   const DEFAULT_MASK_IMAGE = 'linear-gradient(to bottom, black, transparent)';
@@ -21,24 +20,22 @@
   // Watch for example changes
   $effect(() => {
     const example = appStore.currentExample;
-    if (example) {
-      maskImage = example.maskImage;
-      maskSize = example.maskSize;
-      maskPosition = example.maskPosition;
-      maskRepeat = example.maskRepeat;
-      maskMode = example.maskMode;
-      variables = example.variables ? [...example.variables] : [];
-    }
+    maskImage = example.maskImage;
+    maskSize = example.maskSize;
+    maskPosition = example.maskPosition;
+    maskRepeat = example.maskRepeat;
+    maskMode = example.maskMode;
+    variables = example.variables ? [...example.variables] : [];
   });
   
-  // Apply mask when properties change
+  // Apply mask and update store when properties change
   $effect(() => {
     if (maskedImage) {
       applyMask();
-      onVariablesChange?.(new CustomEvent('variableschange', { detail: variables }));
-      onMaskPropertiesChange?.(new CustomEvent('maskpropertieschange', { 
-        detail: { maskImage, maskSize, maskPosition, maskRepeat, maskMode } 
-      }));
+      untrack(() => {
+        appStore.setMaskProperties({ maskImage, maskSize, maskPosition, maskRepeat, maskMode });
+        appStore.setVariables(variables);
+      });
     }
   });
   
