@@ -1,0 +1,281 @@
+[
+  {
+    "name": "Spotlight",
+    "maskImage": "radial-gradient(\n  circle,\n  black var(--spotlight-size),\n  transparent var(--spotlight-fade)\n)",
+    "maskSize": "var(--spotlight-scale)",
+    "maskPosition": "var(--spotlight-x) var(--spotlight-y)",
+    "maskRepeat": "no-repeat",
+    "maskMode": "alpha",
+    "variables": [
+      "--spotlight-size: 30%;",
+      "--spotlight-fade: 70%;",
+      "--spotlight-scale: 150%;",
+      "--spotlight-x: 50%;",
+      "--spotlight-y: 50%;"
+    ],
+    "animationSteps": [
+      {
+        "easing": "power1.out",
+        "duration": 2,
+        "variables": [
+          "--spotlight-size: 20%;",
+          "--spotlight-fade: 80%;",
+          "--spotlight-scale: 200%;",
+          "--spotlight-x: 80%;",
+          "--spotlight-y: 80%;"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Checkered",
+    "maskImage": "linear-gradient(\n  45deg,\n  black 25%,\n  transparent 25%,\n  transparent 75%,\n  black 75%\n),\nlinear-gradient(\n  45deg,\n  black 25%,\n  transparent 25%,\n  transparent 75%,\n  black 75%\n)",
+    "maskSize": "var(--check-size) var(--check-size), var(--check-size) var(--check-size)",
+    "maskPosition": "0 0, calc(var(--check-size) / 2) calc(var(--check-size) / 2)",
+    "maskRepeat": "repeat",
+    "maskMode": "alpha",
+    "variables": [
+      "--check-size: 5vmax;"
+    ],
+    "animationSteps": [
+      {
+        "easing": "power1.out",
+        "duration": 2,
+        "variables": [
+          "--check-size: 150vmax;"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Circle Shape",
+    "maskImage": "radial-gradient(\n  circle, \n  black var(--circle-size),\n  transparent 0%\n)",
+    "maskSize": "200%",
+    "maskPosition": "var(--x) var(--y)",
+    "maskRepeat": "no-repeat",
+    "maskMode": "alpha",
+    "variables": [
+      "--circle-size: 20%;",
+      "--x: 0%;",
+      "--y: 50%;"
+    ],
+    "animationSteps": [
+      {
+        "easing": "power1.out",
+        "duration": 2,
+        "variables": [
+          "--x: 100%;"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Corner Fade",
+    "maskImage": "linear-gradient(\n  var(--corner-angle),\n  black,\n  transparent\n)",
+    "maskSize": "100% 100%",
+    "maskPosition": "center",
+    "maskRepeat": "no-repeat",
+    "maskMode": "alpha",
+    "variables": [
+      "--corner-angle: 135deg;"
+    ],
+    "animationSteps": [
+      {
+        "easing": "none",
+        "duration": 2,
+        "variables": [
+          "--corner-angle: 495deg;"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Crosshatch",
+    "maskImage": "repeating-linear-gradient(\n  0deg,\n  black 0px,\n  black var(--line-width),\n  transparent var(--line-width),\n  transparent var(--line-spacing)\n),\nrepeating-linear-gradient(\n  90deg,\n  black 0px,\n  black var(--line-width),\n  transparent var(--line-width),\n  transparent var(--line-spacing)\n)",
+    "maskSize": "100% 100%",
+    "maskPosition": "center",
+    "maskRepeat": "no-repeat",
+    "maskMode": "alpha",
+    "variables": [
+      "--line-width: 2px;",
+      "--line-spacing: 4px;"
+    ],
+    "animationSteps": [
+      {
+        "easing": "power1.out",
+        "duration": 2,
+        "variables": [
+          "--line-width: 4px;",
+          "--line-spacing: 8px;"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Diagonal Stripes",
+    "maskImage": "repeating-linear-gradient(\n  var(--stripe-angle),\n  black 0,\n  black calc(var(--stripe-width) * var(--stripe-gap)),\n  transparent calc(var(--stripe-width) * var(--stripe-gap)),\n  transparent var(--stripe-width)\n)",
+    "maskSize": "100% 100%",
+    "maskPosition": "center",
+    "maskRepeat": "no-repeat",
+    "maskMode": "alpha",
+    "variables": [
+      "--stripe-angle: 45deg;",
+      "--stripe-gap: .5",
+      "--stripe-width: 20px;"
+    ],
+    "animationSteps": [
+      {
+        "easing": "power1.out",
+        "duration": 2,
+        "variables": [
+          "--stripe-angle: 135deg;",
+          "--stripe-gap: 0;"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Horizontal Fade",
+    "maskImage": "linear-gradient(\n  to right,\n  black,\n  transparent var(--fade-point)\n)",
+    "maskSize": "100% 100%",
+    "maskPosition": "center",
+    "maskRepeat": "no-repeat",
+    "maskMode": "alpha",
+    "variables": [
+      "--fade-point: 100%;"
+    ],
+    "animationSteps": [
+      {
+        "easing": "power1.out",
+        "duration": 2,
+        "variables": [
+          "--fade-point: 50%;"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Linear Gradient Fade",
+    "maskImage": "linear-gradient(\n  to bottom,\n  black,\n  transparent var(--fade-end)\n)",
+    "maskSize": "100% 100%",
+    "maskPosition": "center",
+    "maskRepeat": "no-repeat",
+    "maskMode": "alpha",
+    "variables": [
+      "--fade-end: 100%;"
+    ],
+    "animationSteps": [
+      {
+        "easing": "power1.out",
+        "duration": 2,
+        "variables": [
+          "--fade-end: 50%;"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Circles (Offset)",
+    "maskImage": "radial-gradient(\n  circle at 25% 25%,\n  black var(--dot-size),\n  transparent var(--dot-size)\n),\nradial-gradient(\n  circle at 75% 75%,\n  black var(--dot-size),\n  transparent var(--dot-size)\n)",
+    "maskSize": "100% 100%",
+    "maskPosition": "center",
+    "maskRepeat": "repeat",
+    "maskMode": "alpha",
+    "variables": [
+      "--dot-size: 10%;"
+    ],
+    "animationSteps": [
+      {
+        "easing": "power1.out",
+        "duration": 2,
+        "variables": [
+          "--dot-size: 50%;"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Ocean Waves",
+    "maskImage": "linear-gradient(\n  black 50%,\n  transparent 0\n),\nradial-gradient(\n  circle closest-side,\n  black 53%,\n  transparent 0\n),\nradial-gradient(\n  circle closest-side,\n  black 50%,\n  transparent 0\n)",
+    "maskSize": "var(--wave-width) var(--wave-height), var(--wave-width) var(--wave-height), var(--wave-width) var(--wave-height)",
+    "maskPosition": "0 0, 0 0, calc(var(--wave-width) / 2) 0",
+    "maskRepeat": "repeat-x",
+    "maskMode": "alpha",
+    "variables": [
+      "--wave-width: 110px;",
+      "--wave-height: 5%;"
+    ],
+    "animationSteps": [
+      {
+        "easing": "power1.out",
+        "duration": 2,
+        "variables": [
+          "--wave-width: 150px;",
+          "--wave-height: 100%;"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Ocean Waves 2",
+    "maskImage": "linear-gradient(black calc(var(--wave-y) - (var(--wave-size) / 2)), transparent 0),\nradial-gradient(\n  circle,\n  black 50%,\n  transparent 0\n),\nradial-gradient(\n  circle,\n  black 50%,\n  transparent 0\n)",
+    "maskSize": "100%, var(--wave-size) var(--wave-size), var(--wave-size) var(--wave-size)",
+    "maskPosition": "0 0, 0 var(--wave-y), calc(var(--wave-size) / 2) var(--wave-y)",
+    "maskRepeat": "repeat-x",
+    "maskMode": "alpha",
+    "variables": [
+      "--wave-y: 0%;",
+      "--wave-size: 5%;"
+    ],
+    "animationSteps": [
+      {
+        "easing": "power1.out",
+        "duration": 2,
+        "variables": [
+          "--wave-y: 100%;"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Circles (Overlapping)",
+    "maskImage": "radial-gradient(\n  circle,\n  black 40%,\n  transparent 50%\n)",
+    "maskSize": "var(--pattern-size) var(--pattern-size)",
+    "maskRepeat": "repeat",
+    "maskMode": "alpha",
+    "variables": [
+      "--pattern-size: 5vmax;"
+    ],
+    "animationSteps": [
+      {
+        "easing": "power1.out",
+        "duration": 2,
+        "variables": [
+          "--pattern-size: 200vmax;"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Side Fade with Offset",
+    "maskImage": "linear-gradient(\n  to right,\n  transparent,\n  black,\n  transparent\n)",
+    "maskSize": "var(--fade-width) 100%",
+    "maskPosition": "var(--fade-position) 0",
+    "maskRepeat": "no-repeat",
+    "maskMode": "alpha",
+    "variables": [
+      "--fade-width: 200%;",
+      "--fade-position: -50%;"
+    ],
+    "animationSteps": [
+      {
+        "easing": "power1.out",
+        "duration": 2,
+        "variables": [
+          "--fade-width: 150%;",
+          "--fade-position: 0%;"
+        ]
+      }
+    ]
+  }
+]
