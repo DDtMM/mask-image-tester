@@ -53,11 +53,11 @@
         </p>
         <ol class="list-decimal list-inside space-y-1 text-sm pl-3">
           <li>Define initial values for your CSS variables in the Mask Properties panel</li>
-          <li>Add animation steps using the ➕ button</li>
+          <li>Add animation steps using the *Add Step* button</li>
           <li>For each step, set the easing function and duration</li>
           <li>Add CSS variables with their target values (e.g., <code class="text-primary">--my-var: 100%;</code>)</li>
           <li>Click Play to run the animation once, or enable Loop for continuous playback</li>
-          <li>Enable Yoyo (requires Loop) to make the animation reverse back to the start</li>
+          <li>Enable Yoyo to make the animation reverse back to the start</li>
         </ol>
         <p class="text-sm mt-2">
           Each step animates from the previous state to the new values you define. The animation will smoothly interpolate between these values.

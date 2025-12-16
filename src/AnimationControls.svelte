@@ -68,9 +68,9 @@
     steps = [...steps, { easing: lastStep.easing, duration: lastStep.duration, variables: [] }];
   }
   
-  function removeStep() {
+  function removeStepAtIndex(index: number) {
     if (steps.length > 1) {
-      steps = steps.slice(0, -1);
+      steps = steps.filter((_, i) => i !== index);
     }
   }
   
@@ -201,79 +201,82 @@
   }
 </script>
 
-<div class="card bg-base-300 border border-base-content/10 h-full flex flex-col">
-  <div class="card-body px-3 py-1 flex flex-col min-h-0 bg-base-200">
-    <h3 class="card-title text-lg shrink-0">🎬 GSAP Animation</h3>
-    
-    <div class="flex-1 overflow-y-auto  min-h-0">
-      {#each steps as step, i}
-        <div class="step-item mb-3 p-3 bg-base-100 rounded-box">
-          <div class="text-xs font-bold mb-2">Step {i + 1}</div>
-          <div class="grid grid-cols-2 gap-3 mb-3">
-            <div class="form-control">
-              <label class="label py-1" for="easing-{i}"><span class="label-text text-xs">Easing</span></label>
-              <select id="easing-{i}" bind:value={step.easing} class="select select-bordered select-sm">
-                {#each easingOptions as option}
-                  <option value={option}>{option}</option>
-                {/each}
-              </select>
-            </div>
 
-            <div class="form-control">
-              <label class="label py-1" for="duration-{i}"><span class="label-text text-xs">Duration (s)</span></label>
-              <input id="duration-{i}" type="number" bind:value={step.duration} min="0.1" step="0.1" class="input input-bordered input-sm" />
-            </div>
+<div class="flex flex-col min-h-0 h-full gap-3">
+  <div class="flex flex-row flex-wrap">
+    <h3 class="text-lg shrink-0">🎬 GSAP Animation</h3>
+    <div class="ml-auto">
+      <button onclick={addStep} class="btn btn-xs btn-ghost">+ Add Step</button>
+    </div>
+  </div>
+  <div class="flex-1 overflow-y-auto border border-base-content/20 min-h-0 space-y-2">
+    {#each steps as step, i}
+      <div class="step-item m-2 p-2 bg-base-100 rounded-box">
+        <div class="flex items-center justify-between mb-2">
+          <div class="text-xs font-bold">Step {i + 1}</div>
+          <button onclick={() => removeStepAtIndex(i)} title="Remove Step {i + 1}" class="btn btn-xs btn-ghost btn-square" disabled={steps.length === 1}>✕</button>
+        </div>
+        <div class="grid grid-cols-2 gap-3 mb-3">
+          <div class="form-control">
+            <label class="label py-1" for="easing-{i}"><span class="label-text text-xs">Easing</span></label>
+            <select id="easing-{i}" bind:value={step.easing} class="select select-bordered select-sm">
+              {#each easingOptions as option}
+                <option value={option}>{option}</option>
+              {/each}
+            </select>
           </div>
 
           <div class="form-control">
-            <div class="flex items-center justify-between mb-1">
-              <span class="label-text text-xs">CSS Variables</span>
-              <button onclick={() => addVariableToStep(i)} class="btn btn-xs btn-ghost">+ Add Variable</button>
-            </div>
-            {#each step.variables, varIndex}
-              <div class="flex gap-2 mb-2">
-                <input 
-                  type="text" 
-                  bind:value={step.variables[varIndex]} 
-                  placeholder="--my-var: 100%;" 
-                  class="input input-bordered input-sm flex-1 font-mono text-sm"
-                />
-                <button onclick={() => removeVariableFromStep(i, varIndex)} class="btn btn-sm btn-ghost btn-square">✕</button>
-              </div>
-            {/each}
-            {#if step.variables.length === 0}
-              <div class="text-xs text-base-content/50 italic">No variables defined</div>
-            {/if}
+            <label class="label py-1" for="duration-{i}"><span class="label-text text-xs">Duration (s)</span></label>
+            <input id="duration-{i}" type="number" bind:value={step.duration} min="0.1" step="0.1" class="input input-bordered input-sm" />
           </div>
         </div>
-      {/each}
-      <div class="flex flex-row gap-2 shrink-0 justify-end">
-        <button onclick={addStep} class="btn btn-success btn-xs">➕</button>
-        <button onclick={removeStep} class="btn btn-error btn-xs">➖</button>
-      </div>
-    </div>
 
-    <div class="flex flex-row flex-wrap gap-2 shrink-0">
-      <button onclick={() => playAnimation(isLooped)} class="btn btn-sm">▶️ Play</button>
-      <button onclick={stopAnimation} class="btn btn-sm" disabled={!currentAnimation}>⏹️ Stop</button>
-      <button onclick={resetToInitial} class="btn btn-sm">🔄 Reset</button>
-    </div>
-
-    <div class="flex flex-row flex-wrap gap-4 shrink-0 ml-1">
-      <div class="form-control shrink-0">
-        <label class="label cursor-pointer justify-start gap-2">
-          <input type="checkbox" bind:checked={isLooped} class="checkbox checkbox-xs" />
-          <span class="label-text text-xs">Loop</span>
-        </label>
+        <div class="form-control">
+          <div class="flex items-center justify-between mb-1">
+            <span class="label-text text-xs">CSS Variables</span>
+            <button onclick={() => addVariableToStep(i)} class="btn btn-xs btn-ghost">+ Add Variable</button>
+          </div>
+          {#each step.variables, varIndex}
+            <div class="flex gap-2 mb-2">
+              <input 
+                type="text" 
+                bind:value={step.variables[varIndex]} 
+                placeholder="--my-var: 100%;" 
+                class="input input-bordered input-sm flex-1 font-mono text-sm"
+              />
+              <button onclick={() => removeVariableFromStep(i, varIndex)} class="btn btn-sm btn-ghost btn-square">✕</button>
+            </div>
+          {/each}
+          {#if step.variables.length === 0}
+            <div class="text-xs text-base-content/50 italic">No variables defined</div>
+          {/if}
+        </div>
       </div>
+    {/each}
 
-      <div class="form-control shrink-0">
-        <label class="label cursor-pointer justify-start gap-2">
-          <input type="checkbox" bind:checked={isYoyo} disabled={!isLooped} class="checkbox checkbox-xs" />
-          <span class="label-text text-xs">Yoyo Loops</span>
-        </label>
-      </div>
-    </div>
   </div>
 
+  <div class="flex flex-row flex-wrap gap-2 shrink-0">
+    <button onclick={() => playAnimation(isLooped)} class="btn btn-sm">▶️ Play</button>
+    <button onclick={stopAnimation} class="btn btn-sm" disabled={!currentAnimation}>⏹️ Stop</button>
+    <button onclick={resetToInitial} class="btn btn-sm">🔄 Reset</button>
+  </div>
+
+  <div class="flex flex-row flex-wrap gap-4 shrink-0 ml-1">
+    <div class="form-control shrink-0">
+      <label class="label cursor-pointer justify-start gap-2">
+        <input type="checkbox" bind:checked={isLooped} class="checkbox checkbox-xs" />
+        <span class="label-text text-xs">Loop</span>
+      </label>
+    </div>
+
+    <div class="form-control shrink-0">
+      <label class="label cursor-pointer justify-start gap-2">
+        <input type="checkbox" bind:checked={isYoyo} disabled={!isLooped} class="checkbox checkbox-xs" />
+        <span class="label-text text-xs">Yo-yo</span>
+      </label>
+    </div>
+  </div>
 </div>
+
