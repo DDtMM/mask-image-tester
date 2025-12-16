@@ -1,8 +1,8 @@
 <script lang="ts">
   import gsap from 'gsap';
+  import { untrack } from 'svelte';
   import type { AnimationStep } from './examples';
   import { appStore } from './store.svelte';
-    import { untrack } from 'svelte';
   
   let { maskedImage }: { 
     maskedImage: HTMLImageElement; 
@@ -11,8 +11,11 @@
   let steps = $state<AnimationStep[]>([
     { easing: 'power1.out', duration: 2, variables: [] }
   ]);
-  let yoyo = $state(true);
+
   let currentAnimation = $state<gsap.core.Tween | gsap.core.Timeline | undefined>(undefined);
+  let isLooped = $state(false);
+  let isYoyo = $state(false);
+
   
   const easingOptions = [
     'none', 'power1.in', 'power1.out', 'power1.inOut',
@@ -47,6 +50,17 @@
   // Update store when steps change
   $effect(() => {
     untrack(() => appStore.setAnimationSteps(steps));
+  });
+
+  // Restart animation when loop or yoyo changes
+  $effect(() => {
+    isLooped;
+    isYoyo;
+    untrack(() => {
+     if (currentAnimation) {
+        playAnimation(isLooped);
+      }
+    });
   });
   
   function addStep() {
@@ -99,7 +113,7 @@
     // Create timeline
     const timeline = gsap.timeline({
       repeat: loop ? -1 : 0,
-      yoyo: loop && yoyo,
+      yoyo: loop && isYoyo,
       onUpdate: () => {
         // Force re-render of mask with updated variables
         if (maskedImage) {
@@ -188,10 +202,10 @@
 </script>
 
 <div class="card bg-base-300 border border-base-content/10 h-full flex flex-col">
-  <div class="card-body p-4 flex flex-col min-h-0">
+  <div class="card-body px-3 py-1 flex flex-col min-h-0 bg-base-200">
     <h3 class="card-title text-lg shrink-0">🎬 GSAP Animation</h3>
     
-    <div class="flex-1 overflow-y-auto mb-3 min-h-0">
+    <div class="flex-1 overflow-y-auto  min-h-0">
       {#each steps as step, i}
         <div class="step-item mb-3 p-3 bg-base-100 rounded-box">
           <div class="text-xs font-bold mb-2">Step {i + 1}</div>
@@ -233,23 +247,33 @@
           </div>
         </div>
       {/each}
+      <div class="flex flex-row gap-2 shrink-0 justify-end">
+        <button onclick={addStep} class="btn btn-success btn-xs">➕</button>
+        <button onclick={removeStep} class="btn btn-error btn-xs">➖</button>
+      </div>
     </div>
 
-    <div class="form-control shrink-0">
-      <label class="label cursor-pointer justify-start gap-2">
-        <input type="checkbox" bind:checked={yoyo} class="checkbox checkbox-sm" />
-        <span class="label-text">Yoyo (reverse on loop)</span>
-      </label>
+    <div class="flex flex-row flex-wrap gap-2 shrink-0">
+      <button onclick={() => playAnimation(isLooped)} class="btn btn-sm">▶️ Play</button>
+      <button onclick={stopAnimation} class="btn btn-sm" disabled={!currentAnimation}>⏹️ Stop</button>
+      <button onclick={resetToInitial} class="btn btn-sm">🔄 Reset</button>
     </div>
 
-    <div class="flex gap-2 shrink-0">
-      <button onclick={() => playAnimation(false)} class="btn btn-primary btn-sm">▶️ Play</button>
-      <button onclick={() => playAnimation(true)} class="btn btn-secondary btn-sm">🔁 Loop</button>
-      <button onclick={stopAnimation} class="btn btn-error btn-sm">⏹️ Stop</button>
-      <button onclick={resetToInitial} class="btn btn-outline btn-sm">🔄 Reset</button>
-      <div class="flex-1"></div>
-      <button onclick={addStep} class="btn btn-success btn-sm">➕</button>
-      <button onclick={removeStep} class="btn btn-error btn-sm">➖</button>
+    <div class="flex flex-row flex-wrap gap-4 shrink-0 ml-1">
+      <div class="form-control shrink-0">
+        <label class="label cursor-pointer justify-start gap-2">
+          <input type="checkbox" bind:checked={isLooped} class="checkbox checkbox-xs" />
+          <span class="label-text text-xs">Loop</span>
+        </label>
+      </div>
+
+      <div class="form-control shrink-0">
+        <label class="label cursor-pointer justify-start gap-2">
+          <input type="checkbox" bind:checked={isYoyo} disabled={!isLooped} class="checkbox checkbox-xs" />
+          <span class="label-text text-xs">Yoyo Loops</span>
+        </label>
+      </div>
     </div>
   </div>
+
 </div>

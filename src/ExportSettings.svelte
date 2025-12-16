@@ -90,8 +90,8 @@
   }
 </script>
 
-<button onclick={openModal} class="btn btn-outline btn-sm w-full">
-  📤 Export Settings
+<button onclick={openModal} class="btn btn-outline btn-sm" title="Export Settings">
+  📤 <span class="hidden sm:inline">Export</span>
 </button>
 
 {#if modalOpen}

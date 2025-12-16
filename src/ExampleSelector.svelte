@@ -19,9 +19,9 @@
   }
 </script>
 
-<div class="form-control w-full">
-  <label class="label" for="selectedExample">
-    <span class="label-text font-semibold">Select Example</span>
+<div class="form-control flex flex-row grow gap-2">
+  <label class="label hidden sm:flex" for="selectedExample">
+    <span class="label-text font-semibold">Example</span>
   </label>
   <select id="selectedExample" bind:value={selectedExample} onchange={handleExampleChange} class="select select-bordered w-full">
     <option value="">-- Choose an example --</option>
