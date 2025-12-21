@@ -118,23 +118,33 @@
     const errors: string[] = [];
     
     if (maskImage.match(/\b(top|bottom|left|right|center)\b/)) {
-      errors.push('Position values detected in mask-image. Move position values to mask-position property.');
+      errors.push('Possible position values detected in mask-image. Move position values to mask-position property.');
     }
     
     if (maskImage.match(/\b(repeat|no-repeat|space|round)\b/)) {
-      errors.push('Repeat values detected in mask-image. Move repeat values to mask-repeat property.');
+      errors.push('Possible repeat values detected in mask-image. Move repeat values to mask-repeat property.');
     }
     
-    const gradientCount = (maskImage.match(/gradient/g) || []).length;
-    if (gradientCount > 1) {
+    // Count top-level commas (not nested inside parentheses)
+    let depth = 0;
+    let commaCount = 0;
+    for (const char of maskImage) {
+      if (char === '(') depth++;
+      else if (char === ')') depth--;
+      else if (char === ',' && depth === 0) commaCount++;
+    }
+    const imageCount = commaCount + 1; // Number of images = commas + 1
+
+    if (imageCount > 1) {
       const sizeCount = maskSize ? (maskSize.split(',').length) : 1;
       const posCount = maskPosition ? (maskPosition.split(',').length) : 1;
       
-      if (sizeCount !== gradientCount) {
-        errors.push(`Multiple gradients (${gradientCount}) require matching mask-size values (found ${sizeCount}). Separate with commas.`);
+      console.log(sizeCount, posCount, imageCount, maskPosition, maskImage);
+      if (sizeCount !== imageCount) {
+        errors.push(`Multiple gradients (${imageCount}) require matching mask-size values (found ${sizeCount}). Separate with commas.`);
       }
-      if (posCount !== gradientCount) {
-        errors.push(`Multiple gradients (${gradientCount}) require matching mask-position values (found ${posCount}). Separate with commas.`);
+      if (posCount !== imageCount) {
+        errors.push(`Multiple gradients (${imageCount}) require matching mask-position values (found ${posCount}). Separate with commas.`);
       }
     }
     
